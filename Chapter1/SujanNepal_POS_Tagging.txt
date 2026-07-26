@@ -1,0 +1,45 @@
+Words               POS Tags             Expanded Value      
+------------------------------------------------------------
+said                 VBD Other 
+had                  VBD Other 
+taken                VBN Other 
+build                VB Verb 
+repeated             VBN Other 
+went                 VBD Other 
+submitted            VBD Other 
+demanding            VBG Verb (gerund/present participle) 
+involved             VBN Other 
+grabbing             VBG Verb (gerund/present participle) 
+selling              VBG Verb (gerund/present participle) 
+said                 VBD Other 
+continue             VB Verb 
+take                 VBP Other 
+recover              VB Verb 
+
+ 
+------------------------------------------------------------
+Nouns 
+------------------------------------------------------------
+group               NN Noun 
+issue               NN Noun 
+streets             NNS Other 
+pressure            NN Noun 
+appeals             NNS Other 
+campaign            NN Noun 
+memorandum          NN Noun 
+district            NN Noun 
+administration      NN Noun 
+restoration         NN Noun 
+Hattimara           NNP Other 
+River               NNP Other 
+removal             NN Noun 
+encroachments       NNS Other 
+action              NN Noun 
+land.The            NN Noun 
+protesters          NNS Other 
+campaign            NN Noun 
+authorities         NNS Other 
+steps               NNS Other 
+river               NN Noun 
+property            NN Noun 
+encroachment        NN Noun 
