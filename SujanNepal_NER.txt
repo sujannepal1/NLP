@@ -1,0 +1,23 @@
+Hattimara                      | PERSON          | Start: 16, End: 25
+River                          | LOC             | Start: 68, End: 73
+Udayapur                       | GPE             | Start: 77, End: 85
+Shyam Rai                      | PERSON          | Start: 90, End: 99
+01:19 pm Jul 25,               | TIME            | Start: 111, End: 127
+2026                           | DATE            | Start: 128, End: 132
+Friday                         | DATE            | Start: 162, End: 168
+Where Is Hattimara             | WORK_OF_ART     | Start: 208, End: 226
+2006                           | DATE            | Start: 292, End: 296
+People's Movement
+Land         | ORG             | Start: 297, End: 319
+Protesters                     | NORP            | Start: 378, End: 388
+GHAIGHAT                       | ORG             | Start: 445, End: 453
+25Holding                      | CARDINAL        | Start: 460, End: 469
+Where Is Hattimara             | WORK_OF_ART     | Start: 489, End: 507
+Friday                         | DATE            | Start: 586, End: 592
+Hattimara River                | LOC             | Start: 660, End: 675
+Khem Narayan Yadav             | PERSON          | Start: 749, End: 767
+Gaighat Bazaar                 | PERSON          | Start: 886, End: 900
+2006                           | DATE            | Start: 1031, End: 1035
+People's Movement              | ORG             | Start: 1036, End: 1053
+years                          | DATE            | Start: 1258, End: 1263
+the Hattimara River            | LOC             | Start: 1580, End: 1599
