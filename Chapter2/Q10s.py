@@ -1,6 +1,7 @@
 import math
 import os
 from collections import Counter
+
 import numpy as np
 import pandas as pd
 
@@ -137,7 +138,3 @@ corpus = Corpus(DATA_PATH)
 
 print(corpus.documents[0].co_occurrence_matrix())
 # Coccurrence_matrix = CoccurrenceMatrix(corpus.vocabulary())
-
-print("Coccurrence Matrix:")
-# for word, coccurrence in Coccurrence_matrix.get_matrix().items():
-#     print(f"{word}: {coccurrence}")
