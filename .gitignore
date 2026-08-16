@@ -2,3 +2,8 @@
 .env/*
 
 .env/
+
+data/
+settings.json
+test.json
+test.py
