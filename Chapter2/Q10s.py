@@ -41,8 +41,9 @@ class Document:
         co_matrix = np.zeros(
             (length_of_unique_words, length_of_unique_words), dtype=int
         )
+        sorted_vocabulary = sorted(self.vocabulary)
         label_of_vocabulary = {
-            word: index for index, word in enumerate(sorted(self.vocabulary))
+            word: index for index, word in enumerate(sorted_vocabulary)
         }
         print("label of vocab : ", label_of_vocabulary)
         # need to populate the matrix with co-occurrence counts
@@ -74,7 +75,15 @@ class Document:
                     co_matrix[index_of_current_word, index_of_word_in_vocab] += 1
                     co_matrix[index_of_word_in_vocab, index_of_current_word] += 1
 
-        # range in the total words in the document
+        df = pd.DataFrame(
+            co_matrix, index=sorted_vocabulary, columns=sorted_vocabulary, dtype=int
+        )
+        print(df)
+
+        # Source - https://stackoverflow.com/a/54357705
+        # Posted by Julien
+        # Retrieved 2026-08-17, License - CC BY-SA 4.0
+        print("value of zero counts in the sparse matrix", (df.values == 0).sum())
 
         return co_matrix
 
@@ -142,5 +151,5 @@ DATA_PATH = "data/nepali_news"
 
 corpus = Corpus(DATA_PATH)
 
-print(corpus.documents[0].co_occurrence_matrix())
+corpus.documents[0].co_occurrence_matrix()
 # Coccurrence_matrix = CoccurrenceMatrix(corpus.vocabulary())
