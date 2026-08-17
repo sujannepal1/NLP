@@ -37,7 +37,6 @@ class Document:
         return Counter(self.formatted_words)
 
     def co_occurrence_matrix(self, window_size=1):
-
         length_of_unique_words = len(self.vocabulary)
         co_matrix = np.zeros(
             (length_of_unique_words, length_of_unique_words), dtype=int
@@ -45,29 +44,35 @@ class Document:
         label_of_vocabulary = {
             word: index for index, word in enumerate(sorted(self.vocabulary))
         }
+        print("label of vocab : ", label_of_vocabulary)
         # need to populate the matrix with co-occurrence counts
         token_indices = dict(enumerate(self.words))
-        for index, value in token_indices:
-            window_size = 1
+        print("token indices :", token_indices)
+        for index, value in token_indices.items():
+            try:
+                index_of_current_word = label_of_vocabulary[value]
+            except KeyError:
+                value = value.strip()
+                value = value.lower()
+                value = value.strip()
+                value = value.strip(".,!?;:\"'()[]{}")
+                index_of_current_word = label_of_vocabulary[value.lower()]
+            except Exception:  # noqa: BLE001
+                print(f"Error: missing key in the vocabulary for the word {value}")
+                continue
+
             starting_index = max(index - window_size, 0)
             stopping_index = min(index + window_size, length_of_unique_words - 1)
-            print("Index is the current word position in the sentence")
-            print(
-                f"index: {index}, value: {value}, window_start: {starting_index}, window_end: {stopping_index}",
-                "with window size of",
-                window_size,
-            )
-            index_of_current_word = label_of_vocabulary[value]
             for i in range(starting_index, stopping_index):
                 if i != index:
-                    co_matrix[
-                        index_of_current_word,
-                        list(label_of_vocabulary.keys()).index(token_indices[i]),
-                    ] += 1
-                    co_matrix[
-                        list(label_of_vocabulary.keys()).index(token_indices[i]),
-                        index_of_current_word,
-                    ] += 1
+                    token = token_indices[i].lower()
+                    token = token.strip()
+                    token = token.strip(".,!?;:\"'()[]{}")
+                    index_of_word_in_vocab = list(label_of_vocabulary.keys()).index(
+                        token
+                    )
+                    co_matrix[index_of_current_word, index_of_word_in_vocab] += 1
+                    co_matrix[index_of_word_in_vocab, index_of_current_word] += 1
 
         # range in the total words in the document
 
@@ -94,6 +99,7 @@ class Corpus:
                     text = file.read()
 
                 self.add_document(Document(text, filename))
+                break
             # other type of documents like pdf, csv, etc. can be added here
 
     def vocabulary(self):
