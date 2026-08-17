@@ -83,8 +83,13 @@ class Document:
         # Source - https://stackoverflow.com/a/54357705
         # Posted by Julien
         # Retrieved 2026-08-17, License - CC BY-SA 4.0
-        print("value of zero counts in the sparse matrix", (df.values == 0).sum())
-
+        zero_values_count = (df.values == 0).sum()
+        print("value of zero counts in the sparse matrix", zero_values_count)
+        print(
+            f"Out of all the columns and rows we have {length_of_unique_words**2 - zero_values_count} values populated"
+        )
+        # uncomment later line to find more about each column max value
+        # print("max value of each column", df.max())
         return co_matrix
 
 
