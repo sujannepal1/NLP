@@ -10,7 +10,7 @@ class Document:
     def __init__(self, text, name=""):
         self.name = name
         self.text = text
-        self.words = text.split()
+        self.words: list = text.split()
         self.formatted_words = []
 
         for word in self.words:
@@ -152,9 +152,37 @@ class Corpus:
         return tf_idf_scores
 
 
+class NGram:
+    def __init__(self, content: Corpus | Document, n=1) -> None:
+        self.content = content
+        self.n = n
+        self.n_gram_list = []
+
+    def decouple(self):
+        if isinstance(self.content, Corpus):
+            for doc in self.content.documents:
+                self.n_gram_value(self.n_gram_list, self.n, doc)
+        elif isinstance(self.content, Document):
+            self.n_gram_value(self.n_gram_list, self.n, self.content)
+        else:
+            raise NotImplementedError(f"{type(self.content)} not implemented")
+        return self.n_gram_list
+
+    def n_gram_value(self, n_gram_list, n_value, document):
+        words = document.words
+
+        n_gram_list.extend(
+            tuple(words[i : i + n_value]) for i in range(len(words) - n_value + 1)
+        )
+
+
 DATA_PATH = "data/nepali_news"
 
 corpus = Corpus(DATA_PATH)
 
 corpus.documents[0].co_occurrence_matrix()
 # Coccurrence_matrix = CoccurrenceMatrix(corpus.vocabulary())
+
+print(corpus.documents[0].words)
+
+print(NGram(corpus, 2).decouple())
