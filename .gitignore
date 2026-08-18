@@ -7,3 +7,4 @@ data/
 settings.json
 test.json
 test.py
+/__pycache__/
