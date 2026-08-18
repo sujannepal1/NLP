@@ -174,6 +174,93 @@ class NGram:
         n_gram_list.extend(
             tuple(words[i : i + n_value]) for i in range(len(words) - n_value + 1)
         )
+        return n_gram_list
+
+    def get_count(self):
+        # count the number of n_grams in the list
+        freq_dict = dict(Counter(self.n_gram_list).most_common())
+        return freq_dict
+
+    def get_content_length(self):
+        if isinstance(self.content, Corpus):
+            return len(self.content.vocabulary())
+        elif isinstance(self.content, Document):
+            return len(self.content.vocabulary)
+        else:
+            raise NotImplementedError(f"{type(self.content)} not implemented")
+
+    def get_n_gram_probabilities(self):
+        vocabulary = sorted(
+            self.content.vocabulary
+            if isinstance(self.content, Document)
+            else self.content.vocabulary()
+        )
+        vocabulary_length = len(vocabulary)
+        n_gram_counts = self.get_count()
+
+        if not n_gram_counts or not vocabulary_length:
+            return {}
+
+        if self.n == 1:
+            total_words = sum(n_gram_counts.values())
+            return {
+                n_gram: (count + 1) / (total_words + vocabulary_length)
+                for n_gram, count in n_gram_counts.items()
+            }
+
+        context_counts = Counter(n_gram[:-1] for n_gram in n_gram_counts)
+        probabilities = {}
+        for context, context_count in context_counts.items():
+            # laplace smoothing: add 1 to the numerator and vocabulary_length to the denominator
+            denominator = context_count + vocabulary_length
+            for word in vocabulary:
+                n_gram = context + (word,)
+                probabilities[n_gram] = (n_gram_counts.get(n_gram, 0) + 1) / denominator
+
+        return probabilities
+
+    def predict_next_word(self, context: str, number_of_terms: int = 3):
+        n_gram_counts = self.get_count()
+
+        # Unigram model
+        if self.n == 1:
+            predictions = sorted(
+                n_gram_counts.items(),
+                key=lambda x: x[1],
+                reverse=True,
+            )
+
+            return [
+                (n_gram[0], count / sum(n_gram_counts.values()))
+                for n_gram, count in predictions[:number_of_terms]
+            ]
+
+        context_words = tuple(context.split())
+        expected_context_length = self.n - 1
+        if len(context_words) != expected_context_length:
+            raise ValueError(
+                f"A {self.n}-gram model requires {expected_context_length} context words"
+            )
+
+        # Bigram and higher-order models
+        matching_n_grams = {
+            n_gram: count
+            for n_gram, count in n_gram_counts.items()
+            if n_gram[:-1] == context_words
+        }
+
+        if not matching_n_grams:
+            return []
+
+        total = sum(matching_n_grams.values())
+
+        predictions = [
+            (n_gram[-1], count / total) for n_gram, count in matching_n_grams.items()
+        ]
+
+        predictions.sort(key=lambda x: x[1], reverse=True)
+
+        return predictions[:number_of_terms]
 
 
 DATA_PATH = "data/nepali_news"
@@ -183,6 +270,11 @@ corpus = Corpus(DATA_PATH)
 corpus.documents[0].co_occurrence_matrix()
 # Coccurrence_matrix = CoccurrenceMatrix(corpus.vocabulary())
 
-print(corpus.documents[0].words)
+# print(corpus.documents[0].words)
+model = NGram(corpus, 1)
+model.decouple()
 
-print(NGram(corpus, 2).decouple())
+val = input("Enter the last two words: ")
+
+predicted_words = model.predict_next_word(val, 1)
+print(predicted_words)
