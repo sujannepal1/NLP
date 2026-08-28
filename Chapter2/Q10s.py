@@ -125,12 +125,15 @@ class Corpus:
     def total_words(self):
         return sum(document.formatted_word_length for document in self.documents)
 
-    def word_frequencies(self):
+    def word_frequencies(self) -> Counter:
         frequencies = Counter()
 
         for document in self.documents:
-            frequencies.update(document.word_frequency())
-
+            if not frequencies:
+                frequencies = document.word_frequency()
+            else:
+                for word, count in document.word_frequency().items():
+                    frequencies[word] += count
         return frequencies
 
     def inverse_document_frequency(self, word, total_docs):
